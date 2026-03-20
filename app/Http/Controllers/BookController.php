@@ -23,9 +23,8 @@ class BookController extends Controller
             $query->where('category', 'like', "%{$request->category}%");
         }
 
-        $books = $query->paginate(50);
-        $categories = Book::select('category')
-            ->distinct()
+        $books = $query->paginate(5);
+        $categories = Book::pluck('category')
             ->filter()
             ->flatMap(function($item){
                 return array_map('trim', explode(',', $item));

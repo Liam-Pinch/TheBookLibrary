@@ -3,6 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <h1> Welcome, {{ auth()->user()->name }}</h1>
@@ -15,13 +16,12 @@
         <input type="text" name="author" placeholder="Search by author" value="{{ request('author') }}">
         <select name="category"> 
             <option value="">All categories</option>
-            @foreach($categories as $category)
-            @if($category)
+          @foreach($categories as $category)
                 <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>{{ $category }}</option>
-                @endif
             @endforeach
         </select>
         <button type="submit">Search</button>
+        </select>
     </form>
 </body>
 </html>

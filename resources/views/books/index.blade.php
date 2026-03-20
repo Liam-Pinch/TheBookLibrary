@@ -1,4 +1,12 @@
-<h1> Search </h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <h1> Search </h1>
 
     <form method="GET" action="{{ url('/books') }}">
         <input type="text" name="title" placeholder="Search by title" value="{{ request('title') }}">
@@ -11,11 +19,17 @@
         </select>
         <button type="submit">Search</button>
     </form>
+    @php
+        $startIndex = ($books->currentPage() - 1) * $books->perPage();
+    @endphp
 
     <h2>Books</h2>
     @foreach($books as $book)
+    @php
+        $hue = ($loop->index + $startIndex) * 5 % 360;
+    @endphp
     <div style="margin: 5px; border: black 1px solid; padding: 10px; border-radius: 5px;
-    background-color: hsl({{ $loop->index*20 }}, 50%, 80%); box-shadow: 0px 8px 8px 4px #000000;">
+    background-color: hsl({{ $hue }}, 50%, 80%); box-shadow: 0px 8px 8px 4px #000000;">
         <p>{{ $book->title }} - {{ $book->author }}</p>
         <p>category: {{ $book->category }}</p>
         <p>Description: {{ $book->description ?? ''}}</p>
@@ -23,3 +37,6 @@
     </div>
     <br>
     @endforeach
+    {{ $books->links('pagination::bootstrap-4') }}
+</body>
+</html>

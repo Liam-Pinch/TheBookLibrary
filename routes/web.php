@@ -14,7 +14,15 @@ Route::get('/', function () {
 });
 
 Route::get('home', function(Request $request){
-    $categories = Book::select('category')->distinct()->pluck('category');
+        $categories = Book::pluck('category')
+            ->filter()
+            ->flatMap(function($item){
+                return array_map('trim', explode(',', $item));
+            })
+            ->filter()
+            ->sort()
+            ->unique()
+            ->values();
     return view('home', compact('categories'));
 })->middleware(['auth', 'verified'])->name('home');
 
