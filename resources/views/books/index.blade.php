@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1> Search </h1>
+    <a href="{{ route('home') }}" class="btn btn-primary"> Home </a>
 
     <form method="GET" action="{{ url('/books') }}">
         <input type="text" name="title" placeholder="Search by title" value="{{ request('title') }}">
@@ -34,6 +35,7 @@
         <p>category: {{ $book->category }}</p>
         <p>Description: {{ $book->description ?? ''}}</p>
         <p>Published: {{ $book->publish_date ?? ''}}</p>
+        <p>{{ $book->price ?? '' }}</p>
     </div>
     <br>
     @endforeach
