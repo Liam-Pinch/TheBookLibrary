@@ -13,7 +13,7 @@
         <input type="text" name="title" placeholder="Search by title" value="{{ request('title') }}">
         <input type="text" name="author" placeholder="Search by author" value="{{ request('author') }}">
         <select name="category"> 
-            <option value="">All categorys</option>
+            <option value="">All categories</option>
             @foreach($categories as $category)
                 <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>{{ $category }}</option>
             @endforeach
@@ -31,11 +31,11 @@
     @endphp
     <div style="margin: 5px; border: black 1px solid; padding: 10px; border-radius: 5px;
     background-color: hsl({{ $hue }}, 50%, 80%); box-shadow: 0px 8px 8px 4px #000000;">
-        <p>{{ $book->title }} - {{ $book->author }}</p>
-        <p>category: {{ $book->category }}</p>
+        <p>{{ $book->title }} - {{ $book->authors->pluck('name')->implode(', ')}}</p>
+        <p>category: {{ $book->categories->pluck('name')->implode(', ')}}</p>
         <p>Description: {{ $book->description ?? ''}}</p>
         <p>Published: {{ $book->publish_date ?? ''}}</p>
-        <p>{{ $book->price ?? '' }}</p>
+        <p>Average Price: ${{ $book->price ?? '' }}</p>
     </div>
     <br>
     @endforeach

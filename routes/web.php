@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,7 +15,7 @@ Route::get('/', function () {
 });
 
 Route::get('home', function(Request $request){
-        $categories = Book::pluck('category')
+        $categories = Category::pluck('name')
             ->filter()
             ->flatMap(function($item){
                 return array_map('trim', explode(',', $item));

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -16,21 +17,22 @@ class BookController extends Controller
         }
 
         if($request->filled('author')){
-            $query->where('author', 'like', "%{$request->input('author')}%");
+            $query->whereHas('authors', function($q) use ($request){
+                $q->where('name', 'like', "%{$request->author}%");
+            });
         }
 
-        if($request->filled('category')&& $request->category !== ''){
-            $query->where('category', 'like', "%{$request->category}%");
+        if($request->filled('category') && $request->category !== ''){
+            $query->whereHas('categories', function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->category}%");
+            });
         }
 
-        $books = $query->paginate(5);
-        $categories = Book::pluck('category')
-            ->filter()
-            ->flatMap(function($item){
-                return array_map('trim', explode(',', $item));
-            })
+        $books = $query->paginate(10);
+        $categories = Category::pluck('name')
             ->filter()
             ->unique()
+            ->sort()
             ->values();
 
         return view('books.index', compact('books', 'categories'));
